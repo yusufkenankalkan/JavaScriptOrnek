@@ -104,7 +104,11 @@
                 for (i in kullanicilar) {
                     if (kullanicilar[i].email.toLowerCase() == yeniKullanici.email.toLowerCase()) {
                         kullanicidanVarMi = true;
-                        alert("Aynı email ile kayıt bulunmaktadır.");
+                        Swal.fire(
+                            'DİKKAT!',
+                            'Aynı emaile ait kullanıcı bulunmaktadır',
+                            'error'
+                        )
                         return;
                     }
                 }
