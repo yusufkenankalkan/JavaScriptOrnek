@@ -56,42 +56,44 @@
             <div id="kisiDiv"></div>
         </div>
     </div>
-
     <script>
-
+        //$(document).ready(() => {
+        //    alert("berk")
+        //}); // document ready bitti
         var kullanicilar = [];
-
+        var sileTikladi = false;
         $(document).ready(function () {
-            var bugun = new Date();
-            var ay = bugun.getMonth() + 1;
-            var gun = bugun.getDate();
+            var buGun = new Date();
+            var ay = buGun.getMonth() + 1;
+            var gun = buGun.getDate();
             if (gun < 10) {
                 gun = '0' + gun;
             }
             if (ay < 10) {
                 ay = '0' + ay;
             }
-            var maxTrh = bugun.getFullYear() + "-" + ay + "-" + gun;
+            var maxTrh = buGun.getFullYear() + "-" + ay + "-" + gun;
             $("#dogumtrh").attr("max", maxTrh);
 
             $("#btnEkle").click(function () {
                 var $ad = $("#txtAd");
                 var $soyad = $("#txtSoyad");
                 var $email = $("#txtEmail");
-                if ($ad.val() == null || $ad.val().length == 0 ||
-                    $soyad.val() == null || $soyad.val().length == 0 ||
-                    $email.val() == null || $email.val().length == 0)
-                {
+                if ($ad.val() == null || $ad.val().length == 0 || $soyad.val() == null || $soyad.val().length == 0
+                    || $email.val() == null || $email.val().length == 0) {
+
                     Swal.fire(
                         'DİKKAT!',
                         'Gerekli alanlar girilmelidir',
                         'error'
                     )
+
+
                     return;
                 }
                 var yeniKullanici = {
                     ad: $ad.val(),
-                    soyad: $soyad.val(),    
+                    soyad: $soyad.val(),
                     email: $email.val(),
                     dtrh: null
                 };
@@ -117,7 +119,11 @@
 
                 if (!kullanicidanVarMi) {
                     kullanicilar.push(yeniKullanici);
-                    alert("Yeni kullanıcı eklendi.")
+                    Swal.fire(
+                        'BAŞARILI',
+                        'Yeni Kullanıcı Eklendi',
+                        'success'
+                    )
                     //temizlik
                     $ad.val('');
                     $soyad.val('');
@@ -126,9 +132,15 @@
                 KullanicilariGetir();
             }); // btn ekle bitti
 
-            $('btnTemilze').click(function () {
+            $('#btnTemizle').click(function () {
+                //txtler temizlensin
+                $("#txtAd").val('');
+                $("#txtSoyad").val('');
+                $("#txtEmail").val('');
+                $('#dogumtrh').val('');
 
             });
+
 
 
 
@@ -155,15 +167,17 @@
 
 
 
-
-            $(this).keydown(function (e) {
+            $(this).keyup(function (e) {
                 console.log("sayfa");
                 console.log(e);
-                if (e.key == "Enter" &&
-                    e.target.id != "txtAra" &&
-                    e.target.id != "btnTemizle" &&
-                    e.target.defaultValue != "SİL" &&
-                    e.target.defaultValue != "EKLE") {
+                if (e.key=="Tab" && e.target.defaultValue=="SİL") {
+                    sileTikladi=true;
+                }
+
+                if (e.key == "Enter" && e.target.id != "txtAra" && e.target.id != "btnTemizle" &&
+                   !sileTikladi
+                    && e.target.defaultValue != "EKLE") {
+                    
                     $("#btnEkle").trigger("click");
                 }
             });
@@ -226,11 +240,9 @@
                 } else if (result.isDenied) {
                     Swal.fire('SİLİNEMEDİ', '', 'info')
                 }
-            })
+            }) // swal fire bitti
 
-
-
-        }
+        } // kullanıcısil bitti
     </script>
 </body>
 </html>
